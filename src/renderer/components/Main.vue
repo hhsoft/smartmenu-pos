@@ -38,7 +38,7 @@
                 </div>
                 <img src="static/img/ic_plus.png" alt="" class="count-btn" v-on:click="countUp(order)">
               </div>
-              <div class="delete-btn">
+              <div class="delete-btn" v-on:click="removeOrderItem(selectedOrder, order)">
                 <img src="static/img/ic_delete2.png" alt="">
               </div>
             </v-layout>
@@ -192,6 +192,16 @@ export default {
     this.init()
   },
   methods: {
+    removeOrderItem: function(orderItem, item) {
+      let index = _.indexOf(orderItem.OrderMenus, item)
+      if (index > -1) {
+        orderItem.OrderMenus.splice(index, 1)
+        if (!orderItem.deleteItemList) {
+          orderItem.deleteItemList = []
+        }
+        orderItem.deleteItemList.push(item)
+      }
+    },
     limitOrderList: function(orderList) {
       return _.first(orderList, 2)
     },
@@ -407,7 +417,7 @@ export default {
                     margin-right: 20px;
                 }
                 .count {
-                    width: 90px;
+                    min-width: 90px;
                     line-height: 24px;
                     font-size: 13px;
                     margin-right: 20px;
@@ -427,6 +437,7 @@ export default {
                     }
                 }
                 .delete-btn {
+                    cursor: pointer;
                     img {
                         width: 24px;
                         height: 24px;
@@ -448,7 +459,7 @@ export default {
         }
         .price {
             font-size: 24px;
-            font-weight: 500;
+            font-weight: 900;
         }
     }
     .payment-btn {
